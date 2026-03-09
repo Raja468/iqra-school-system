@@ -1,0 +1,9 @@
+pip freeze > requirements.txt
+```
+
+**Or manually paste this** into your `requirements.txt` file (based on your project):
+```
+Flask
+Flask-SQLAlchemy
+gunicorn
+Werkzeug
