@@ -1,0 +1,40 @@
+{% extends "teacher/layout.html" %}
+{% block title %}Mark Attendance{% endblock %}
+{% block topbar_title %}Mark Attendance{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><div class="page-title">Mark Attendance</div><div class="page-sub">{{ today }}</div></div>
+</div>
+{% if success %}<div class="alert alert-success">{{ success }}</div>{% endif %}
+<div class="panel">
+  <div class="panel-header"><div class="panel-title">All Students</div></div>
+  <form method="POST">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Student</th>
+          <th style="text-align:center">✅ Present</th>
+          <th style="text-align:center">❌ Absent</th>
+          <th style="text-align:center">⏰ Late</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in students %}
+        <tr>
+          <td><div class="student-cell"><div class="s-avatar">{{ s[1][0] }}</div><div class="s-name">{{ s[1] }}</div></div></td>
+          <td style="text-align:center"><input type="radio" class="att-radio present" name="{{ s[0] }}" value="Present" required></td>
+          <td style="text-align:center"><input type="radio" class="att-radio absent"  name="{{ s[0] }}" value="Absent"></td>
+          <td style="text-align:center"><input type="radio" class="att-radio late"    name="{{ s[0] }}" value="Late"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if students %}
+    <div style="padding:16px 20px;border-top:1.5px solid var(--border)">
+      <button type="submit" class="btn btn-primary">✓ Save Attendance</button>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

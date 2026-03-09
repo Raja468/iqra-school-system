@@ -1,0 +1,39 @@
+{% extends "admin/layout.html" %}
+{% block title %}Students{% endblock %}
+{% block topbar_title %}Students{% endblock %}
+{% block topbar_actions %}<a href="/admin/add_student" class="btn btn-primary">+ Add Student</a>{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-title">All Enrolled Students</div>
+    <span style="font-size:12px;color:var(--text3);font-weight:600">{{ students|length }} students</span>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Student</th><th>Roll No</th><th>Class</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for s in students %}
+      <tr>
+        <td>
+          <div class="student-cell">
+            <div class="s-avatar">{{ s[1][0] }}</div>
+            <div><div class="s-name">{{ s[1] }}</div><div class="s-sub">ID #{{ s[0] }}</div></div>
+          </div>
+        </td>
+        <td><span style="font-size:13px;font-weight:600;color:var(--text2)">{{ s[2] }}</span></td>
+        <td><span class="badge badge-green">{{ s[3] }}</span></td>
+        <td>
+          <a href="/admin/delete_student/{{ s[0] }}"
+             onclick="return confirm('Delete {{ s[1] }}?')"
+             class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text3)">
+        No students yet. <a href="/admin/add_student" style="color:var(--green);font-weight:700">Add one →</a>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

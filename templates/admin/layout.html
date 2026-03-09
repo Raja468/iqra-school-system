@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Admin{% endblock %} — Iqra Jannat-UL-Atfal School</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
+    </div>
+    <div>
+      <div class="brand-name">Iqra Jannat-UL-Atfal School</div>
+      <div class="brand-tagline">Admin Panel</div>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Overview</div>
+    <a href="/admin/dashboard" class="nav-item {% if request.path == '/admin/dashboard' %}active{% endif %}">
+      <span class="nav-icon">⊞</span> Dashboard
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Manage</div>
+    <a href="/admin/students" class="nav-item {% if '/students' in request.path %}active{% endif %}">
+      <span class="nav-icon">👥</span> Students
+    </a>
+    <a href="/admin/teachers" class="nav-item {% if '/teachers' in request.path %}active{% endif %}">
+      <span class="nav-icon">🧑‍🏫</span> Teachers
+    </a>
+    <a href="/admin/attendance" class="nav-item {% if request.path in ['/admin/attendance', '/admin/view_attendance'] %}active{% endif %}">
+      <span class="nav-icon">📋</span> Attendance
+    </a>
+    <a href="/admin/fees" class="nav-item {% if '/fees' in request.path %}active{% endif %}">
+      <span class="nav-icon">💳</span> Fee System
+    </a>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-label">Communication</div>
+    <a href="/admin/notices" class="nav-item {% if '/notices' in request.path %}active{% endif %}">
+      <span class="nav-icon">📢</span> Notices
+    </a>
+  </div>
+
+  <div class="sidebar-bottom">
+    <a href="/logout" class="user-card">
+      <div class="user-avatar">A</div>
+      <div>
+        <div class="user-name">{{ session.username }}</div>
+        <div class="user-role">Administrator · Logout</div>
+      </div>
+    </a>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">{% block topbar_title %}{% endblock %}</div>
+    {% block topbar_actions %}{% endblock %}
+  </div>
+  <div class="content">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+</body>
+</html>

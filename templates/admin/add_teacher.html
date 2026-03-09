@@ -1,0 +1,44 @@
+{% extends "admin/layout.html" %}
+{% block title %}Add Teacher{% endblock %}
+{% block topbar_title %}Add New Teacher{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div><div class="page-title">Add New Teacher</div><div class="page-sub">Register a teacher for Iqra Jannat-UL-Atfal School</div></div>
+  <a href="/admin/teachers" class="btn btn-ghost">← Back</a>
+</div>
+<div class="panel" style="max-width:580px">
+  <div class="panel-header"><div class="panel-title">Teacher Information</div></div>
+  <div class="panel-body">
+    {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+    {% if success %}<div class="alert alert-success">{{ success }}</div>{% endif %}
+    <form method="POST">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" name="name" class="form-control" placeholder="e.g. Mr. Ali Khan" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Email (optional)</label>
+          <input type="email" name="email" class="form-control" placeholder="teacher@school.pk">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input type="text" name="subject" class="form-control" placeholder="e.g. Mathematics" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Login Username</label>
+          <input type="text" name="username" class="form-control" placeholder="e.g. teacher_ali" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Set a password" required>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Save Teacher</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Student{% endblock %} — Iqra Jannat-UL-Atfal School</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
+    </div>
+    <div>
+      <div class="brand-name">Iqra Jannat-UL-Atfal School</div>
+      <div class="brand-tagline">Student Portal</div>
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Menu</div>
+    <a href="/student/dashboard" class="nav-item {% if request.path == '/student/dashboard' %}active{% endif %}"><span class="nav-icon">⊞</span> My Dashboard</a>
+    <a href="/student/notices"   class="nav-item {% if '/notices' in request.path %}active{% endif %}"><span class="nav-icon">📢</span> Notices</a>
+  </div>
+  <div class="sidebar-bottom">
+    <a href="/logout" class="user-card">
+      <div class="user-avatar blue">S</div>
+      <div><div class="user-name">{{ session.username }}</div><div class="user-role">Student · Logout</div></div>
+    </a>
+  </div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">{% block topbar_title %}{% endblock %}</div>
+  </div>
+  <div class="content">{% block content %}{% endblock %}</div>
+</div>
+</body>
+</html>

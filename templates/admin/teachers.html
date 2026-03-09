@@ -1,0 +1,39 @@
+{% extends "admin/layout.html" %}
+{% block title %}Teachers{% endblock %}
+{% block topbar_title %}Teachers{% endblock %}
+{% block topbar_actions %}<a href="/admin/add_teacher" class="btn btn-primary">+ Add Teacher</a>{% endblock %}
+
+{% block content %}
+<div class="panel">
+  <div class="panel-header">
+    <div class="panel-title">All Teaching Staff</div>
+    <span style="font-size:12px;color:var(--text3);font-weight:600">{{ teachers|length }} staff</span>
+  </div>
+  <table class="data-table">
+    <thead><tr><th>Teacher</th><th>Subject</th><th>Username</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for t in teachers %}
+      <tr>
+        <td>
+          <div class="student-cell">
+            <div class="s-avatar" style="background:linear-gradient(135deg,var(--purple),var(--purple-light))">{{ t[1][0] }}</div>
+            <div><div class="s-name">{{ t[1] }}</div><div class="s-sub">{{ t[2] }}</div></div>
+          </div>
+        </td>
+        <td><span class="badge badge-purple">{{ t[3] }}</span></td>
+        <td><span style="font-size:13px;color:var(--text2);font-weight:600">{{ t[4] }}</span></td>
+        <td>
+          <a href="/admin/delete_teacher/{{ t[0] }}"
+             onclick="return confirm('Delete {{ t[1] }}?')"
+             class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="4" style="text-align:center;padding:40px;color:var(--text3)">
+        No teachers yet. <a href="/admin/add_teacher" style="color:var(--green);font-weight:700">Add one →</a>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

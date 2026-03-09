@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Teacher{% endblock %} — Iqra Jannat-UL-Atfal School</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
+    </div>
+    <div>
+      <div class="brand-name">Iqra Jannat-UL-Atfal School</div>
+      <div class="brand-tagline">Teacher Portal</div>
+    </div>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Menu</div>
+    <a href="/teacher/dashboard"  class="nav-item {% if request.path == '/teacher/dashboard' %}active{% endif %}"><span class="nav-icon">⊞</span> Dashboard</a>
+    <a href="/teacher/attendance" class="nav-item {% if '/attendance' in request.path %}active{% endif %}"><span class="nav-icon">📋</span> Mark Attendance</a>
+    <a href="/teacher/notices"    class="nav-item {% if '/notices' in request.path %}active{% endif %}"><span class="nav-icon">📢</span> Notices</a>
+  </div>
+  <div class="sidebar-bottom">
+    <a href="/logout" class="user-card">
+      <div class="user-avatar purple">T</div>
+      <div><div class="user-name">{{ session.username }}</div><div class="user-role">Teacher · Logout</div></div>
+    </a>
+  </div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">{% block topbar_title %}{% endblock %}</div>
+    {% block topbar_actions %}{% endblock %}
+  </div>
+  <div class="content">{% block content %}{% endblock %}</div>
+</div>
+</body>
+</html>

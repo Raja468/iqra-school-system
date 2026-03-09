@@ -1,0 +1,80 @@
+{% extends "admin/layout.html" %}
+{% block title %}Fee System{% endblock %}
+{% block topbar_title %}Fee Management{% endblock %}
+
+{% block content %}
+<div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stat-card green">
+    <div class="stat-icon">✅</div>
+    <div class="stat-label">Paid This Month</div>
+    <div class="stat-value">{{ paid_count }}</div>
+    <div class="stat-note">Students paid</div>
+  </div>
+  <div class="stat-card uniform">
+    <div class="stat-icon">⚠️</div>
+    <div class="stat-label">Unpaid</div>
+    <div class="stat-value">{{ unpaid_count }}</div>
+    <div class="stat-note">Pending payment</div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-icon">👥</div>
+    <div class="stat-label">Total Students</div>
+    <div class="stat-value">{{ total_students }}</div>
+    <div class="stat-note">{{ current_month }}</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-header"><div class="panel-title">Fee Records — {{ current_month }}</div></div>
+  <table class="data-table">
+    <thead><tr><th>Student</th><th>Class</th><th>Month/Year</th><th>Status</th><th>Paid Date</th><th>Action</th></tr></thead>
+    <tbody>
+      {% for f in fees %}
+      <tr>
+        <td><div class="student-cell"><div class="s-avatar">{{ f[1][0] }}</div><div class="s-name">{{ f[1] }}</div></div></td>
+        <td><span class="badge badge-green">{{ f[2] }}</span></td>
+        <td><span style="font-size:13px;font-weight:600;color:var(--text2)">{{ f[3] }} / {{ f[4] }}</span></td>
+        <td>
+          {% if f[5] == 'paid' %}<span class="badge badge-green">Paid</span>
+          {% else %}<span class="badge badge-red">Unpaid</span>{% endif %}
+        </td>
+        <td style="color:var(--text3);font-size:13px;font-weight:500">{{ f[6] or '—' }}</td>
+        <td>
+          {% if f[5] != 'paid' %}
+          <a href="/admin/fees/pay/{{ f[0] }}" class="btn btn-sm btn-primary">Mark Paid</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% else %}
+      <tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text3)">
+        No fee records. <a href="/admin/fees/generate" style="color:var(--green);font-weight:700">Generate for this month →</a>
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="panel" style="max-width:420px">
+  <div class="panel-header"><div class="panel-title">Generate Monthly Fees</div></div>
+  <div class="panel-body">
+    <form method="POST" action="/admin/fees/generate">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Month</label>
+          <select name="month" class="form-control">
+            <option>January</option><option>February</option><option>March</option>
+            <option>April</option><option>May</option><option>June</option>
+            <option>July</option><option>August</option><option>September</option>
+            <option>October</option><option>November</option><option>December</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year</label>
+          <input type="number" name="year" class="form-control" value="2026" min="2024" max="2030">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Generate Records</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "admin/layout.html" %}
+{% block title %}Notices{% endblock %}
+{% block topbar_title %}Notice Board{% endblock %}
+
+{% block content %}
+<div class="panels-grid">
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">📢 Post New Notice</div></div>
+    <div class="panel-body">
+      {% if success %}<div class="alert alert-success">{{ success }}</div>{% endif %}
+      <form method="POST">
+        <div class="form-group">
+          <label class="form-label">Title</label>
+          <input type="text" name="title" class="form-control" placeholder="Notice title" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea name="message" class="form-control" placeholder="Write your notice here..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Post Notice</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">All Notices</div>
+      <span style="font-size:12px;color:var(--text3);font-weight:600">{{ notices|length }} total</span>
+    </div>
+    {% for n in notices %}
+    <div class="notice-item">
+      <div class="notice-dot" style="background:var(--gold)"></div>
+      <div style="flex:1">
+        <div class="notice-title">{{ n[1] }}</div>
+        <div class="notice-body">{{ n[2] }}</div>
+        <div class="notice-meta">{{ n[3] }}</div>
+      </div>
+      <a href="/admin/delete_notice/{{ n[0] }}"
+         onclick="return confirm('Delete this notice?')"
+         style="color:#dc2626;font-size:12px;text-decoration:none;flex-shrink:0;font-weight:700">Delete</a>
+    </div>
+    {% else %}
+    <p style="padding:20px;color:var(--text3);font-size:13px;font-weight:500">No notices yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

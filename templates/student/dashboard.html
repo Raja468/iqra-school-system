@@ -1,0 +1,67 @@
+{% extends "student/layout.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block topbar_title %}My Dashboard{% endblock %}
+
+{% block content %}
+<div class="stats-grid" style="grid-template-columns:repeat(3,1fr)">
+  <div class="stat-card green">
+    <div class="stat-icon">📋</div>
+    <div class="stat-label">Total Days</div>
+    <div class="stat-value">{{ attendance|length }}</div>
+    <div class="stat-note">Recorded</div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-icon">✅</div>
+    <div class="stat-label">Days Present</div>
+    <div class="stat-value">{{ attendance|selectattr(1,'equalto','Present')|list|length }}</div>
+    <div class="stat-note">On time</div>
+  </div>
+  <div class="stat-card uniform">
+    <div class="stat-icon">❌</div>
+    <div class="stat-label">Days Absent</div>
+    <div class="stat-value">{{ attendance|selectattr(1,'equalto','Absent')|list|length }}</div>
+    <div class="stat-note">Missed</div>
+  </div>
+</div>
+
+<div class="panels-grid">
+  <div class="panel">
+    <div class="panel-header"><div class="panel-title">My Attendance Record</div></div>
+    <table class="data-table">
+      <thead><tr><th>Date</th><th>Status</th></tr></thead>
+      <tbody>
+        {% for a in attendance[:10] %}
+        <tr>
+          <td><span style="font-size:13px;font-weight:600;color:var(--text2)">{{ a[0] }}</span></td>
+          <td>
+            {% if a[1]=='Present' %}<span class="badge badge-green">Present</span>
+            {% elif a[1]=='Absent' %}<span class="badge badge-red">Absent</span>
+            {% else %}<span class="badge badge-gold">Late</span>{% endif %}
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" style="text-align:center;padding:30px;color:var(--text3)">No records yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title">Latest Notices</div>
+      <a href="/student/notices" class="panel-link">View All →</a>
+    </div>
+    {% for n in notices[:5] %}
+    <div class="notice-item">
+      <div class="notice-dot" style="background:var(--gold)"></div>
+      <div>
+        <div class="notice-title">{{ n[0] }}</div>
+        <div class="notice-meta">{{ n[2] }}</div>
+      </div>
+    </div>
+    {% else %}
+    <p style="padding:20px;color:var(--text3);font-size:13px">No notices yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
