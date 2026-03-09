@@ -7,15 +7,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-<aside class="sidebar">
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
-    <div class="brand-logo">
-      <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
-    </div>
-    <div>
-      <div class="brand-name">Iqra Jannat-UL-Atfal School</div>
-      <div class="brand-tagline">Student Portal</div>
-    </div>
+    <div class="brand-logo"><img src="{{ url_for('static', filename='images/logo.webp') }}" alt="Logo"></div>
+    <div><div class="brand-name">Iqra Jannat-UL-Atfal School</div><div class="brand-tagline">Student Portal</div></div>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-label">Menu</div>
@@ -31,9 +27,14 @@
 </aside>
 <div class="main">
   <div class="topbar">
+    <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
     <div class="topbar-title">{% block topbar_title %}{% endblock %}</div>
   </div>
   <div class="content">{% block content %}{% endblock %}</div>
 </div>
+<script>
+  function openSidebar()  { document.getElementById('sidebar').classList.add('open');    document.getElementById('overlay').classList.add('active'); }
+  function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+</script>
 </body>
 </html>

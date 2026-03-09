@@ -473,3 +473,95 @@ textarea.form-control { resize: vertical; min-height: 100px; }
   .panels-grid { grid-template-columns: 1fr; }
   .form-row    { grid-template-columns: 1fr; }
 }
+
+/* ===== FULLY RESPONSIVE — MOBILE FIX ===== */
+
+/* Hamburger button — hidden on desktop */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  flex-direction: column;
+  gap: 5px;
+}
+.hamburger span {
+  display: block;
+  width: 22px; height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: all .3s;
+}
+
+/* Overlay behind sidebar on mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.5);
+  z-index: 99;
+}
+.sidebar-overlay.active { display: block; }
+
+@media (max-width: 768px) {
+
+  /* Sidebar slides off screen by default */
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform .3s ease;
+    z-index: 200;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  /* Main takes full width */
+  .main { margin-left: 0; }
+
+  /* Show hamburger */
+  .hamburger { display: flex; }
+
+  /* Topbar adjustments */
+  .topbar { padding: 0 16px; gap: 8px; }
+  .topbar-title { font-size: 13px; }
+
+  /* Stack topbar actions */
+  .topbar-actions-wrap {
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* Content padding smaller */
+  .content { padding: 16px; }
+
+  /* Stats grid — 2 columns on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-value { font-size: 22px; }
+
+  /* Panels stack */
+  .panels-grid { grid-template-columns: 1fr; gap: 12px; }
+
+  /* Form rows stack */
+  .form-row { grid-template-columns: 1fr; }
+
+  /* Tables scroll horizontally */
+  .panel { overflow-x: auto; }
+  .data-table { min-width: 500px; }
+
+  /* Page header stacks */
+  .page-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .page-header-right { width: 100%; }
+
+  /* Quick actions scroll horizontally */
+  .quick-actions { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
+  .qa-btn { flex-shrink: 0; }
+
+  /* Login card smaller padding */
+  .login-card { padding: 32px 24px; margin: 16px; }
+  .login-school-name { font-size: 16px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .stat-value { font-size: 20px; }
+  .stat-label { font-size: 10px; }
+  .btn { padding: 7px 12px; font-size: 12px; }
+}

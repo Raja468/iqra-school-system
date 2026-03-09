@@ -8,7 +8,10 @@
 </head>
 <body>
 
-<aside class="sidebar">
+<!-- Overlay for mobile sidebar -->
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-logo">
       <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
@@ -28,47 +31,39 @@
 
   <div class="sidebar-section">
     <div class="sidebar-label">Manage</div>
-    <a href="/admin/students" class="nav-item {% if '/students' in request.path %}active{% endif %}">
-      <span class="nav-icon">👥</span> Students
-    </a>
-    <a href="/admin/teachers" class="nav-item {% if '/teachers' in request.path %}active{% endif %}">
-      <span class="nav-icon">🧑‍🏫</span> Teachers
-    </a>
-    <a href="/admin/attendance" class="nav-item {% if request.path in ['/admin/attendance', '/admin/view_attendance'] %}active{% endif %}">
-      <span class="nav-icon">📋</span> Attendance
-    </a>
-    <a href="/admin/fees" class="nav-item {% if '/fees' in request.path %}active{% endif %}">
-      <span class="nav-icon">💳</span> Fee System
-    </a>
+    <a href="/admin/students"   class="nav-item {% if '/students'   in request.path %}active{% endif %}"><span class="nav-icon">👥</span> Students</a>
+    <a href="/admin/teachers"   class="nav-item {% if '/teachers'   in request.path %}active{% endif %}"><span class="nav-icon">🧑‍🏫</span> Teachers</a>
+    <a href="/admin/attendance" class="nav-item {% if '/attendance' in request.path %}active{% endif %}"><span class="nav-icon">📋</span> Attendance</a>
+    <a href="/admin/fees"       class="nav-item {% if '/fees'       in request.path %}active{% endif %}"><span class="nav-icon">💳</span> Fee System</a>
   </div>
 
   <div class="sidebar-section">
     <div class="sidebar-label">Communication</div>
-    <a href="/admin/notices" class="nav-item {% if '/notices' in request.path %}active{% endif %}">
-      <span class="nav-icon">📢</span> Notices
-    </a>
+    <a href="/admin/notices" class="nav-item {% if '/notices' in request.path %}active{% endif %}"><span class="nav-icon">📢</span> Notices</a>
   </div>
 
   <div class="sidebar-bottom">
     <a href="/logout" class="user-card">
       <div class="user-avatar">A</div>
-      <div>
-        <div class="user-name">{{ session.username }}</div>
-        <div class="user-role">Administrator · Logout</div>
-      </div>
+      <div><div class="user-name">{{ session.username }}</div><div class="user-role">Administrator · Logout</div></div>
     </a>
   </div>
 </aside>
 
 <div class="main">
   <div class="topbar">
+    <button class="hamburger" onclick="openSidebar()">
+      <span></span><span></span><span></span>
+    </button>
     <div class="topbar-title">{% block topbar_title %}{% endblock %}</div>
     {% block topbar_actions %}{% endblock %}
   </div>
-  <div class="content">
-    {% block content %}{% endblock %}
-  </div>
+  <div class="content">{% block content %}{% endblock %}</div>
 </div>
 
+<script>
+  function openSidebar()  { document.getElementById('sidebar').classList.add('open');    document.getElementById('overlay').classList.add('active'); }
+  function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('active'); }
+</script>
 </body>
 </html>
