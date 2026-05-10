@@ -1,87 +1,125 @@
 {% extends "admin/layout.html" %}
+
 {% block title %}Dashboard{% endblock %}
-{% block topbar_title %}Dashboard — Welcome, {{ session.username }}{% endblock %}
-{% block topbar_actions %}<a href="/admin/add_student" class="btn btn-primary">+ Add Student</a>{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
 {% block content %}
+
+<!-- Stats Cards -->
 <div class="stats-grid">
-  <div class="stat-card green">
-    <div class="stat-icon">👥</div>
-    <div class="stat-label">Total Students</div>
-    <div class="stat-value">{{ total_students }}</div>
-    <div class="stat-note">Enrolled this year</div>
-  </div>
-  <div class="stat-card purple">
-    <div class="stat-icon">🧑‍🏫</div>
-    <div class="stat-label">Teachers</div>
-    <div class="stat-value">{{ total_teachers }}</div>
-    <div class="stat-note">Active staff members</div>
-  </div>
-  <div class="stat-card gold">
-    <div class="stat-icon">📋</div>
-    <div class="stat-label">Present Today</div>
-    <div class="stat-value">{{ present_today }}</div>
-    <div class="stat-note">Out of {{ total_students }} students</div>
-  </div>
-  <div class="stat-card uniform">
-    <div class="stat-icon">💳</div>
-    <div class="stat-label">Fees Pending</div>
-    <div class="stat-value">{{ fees_pending }}</div>
-    <div class="stat-note">Unpaid this month</div>
-  </div>
+    <div class="stat-card green">
+        <div class="stat-icon"><i class="fas fa-user-graduate"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">{{ total_students or '—' }}</div>
+            <div class="stat-label">Total Students</div>
+            <div class="stat-sub">Enrolled this year</div>
+        </div>
+    </div>
+    <div class="stat-card blue">
+        <div class="stat-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">{{ total_teachers or '—' }}</div>
+            <div class="stat-label">Teachers</div>
+            <div class="stat-sub">Active staff members</div>
+        </div>
+    </div>
+    <div class="stat-card emerald">
+        <div class="stat-icon"><i class="fas fa-circle-check"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">{{ present_today or '0' }}</div>
+            <div class="stat-label">Present Today</div>
+            <div class="stat-sub">Out of {{ total_students or '0' }} students</div>
+        </div>
+    </div>
+    <div class="stat-card amber">
+        <div class="stat-icon"><i class="fas fa-triangle-exclamation"></i></div>
+        <div class="stat-info">
+            <div class="stat-value">{{ fees_pending or '0' }}</div>
+            <div class="stat-label">Fees Pending</div>
+            <div class="stat-sub">Unpaid this month</div>
+        </div>
+    </div>
 </div>
 
-<div class="quick-actions">
-  <a href="/admin/attendance"  class="qa-btn">📋 Mark Attendance</a>
-  <a href="/admin/add_student" class="qa-btn">➕ Add Student</a>
-  <a href="/admin/add_teacher" class="qa-btn">➕ Add Teacher</a>
-  <a href="/admin/fees"        class="qa-btn">💳 Fee System</a>
-  <a href="/admin/notices"     class="qa-btn">📢 Post Notice</a>
+<!-- Quick Actions -->
+<div class="section-title">Quick Actions</div>
+<div class="actions-row">
+    <a href="/admin/attendance" class="action-btn">
+        <i class="fas fa-clipboard-check"></i> Mark Attendance
+    </a>
+    <a href="/admin/add_student" class="action-btn">
+        <i class="fas fa-user-plus"></i> Add Student
+    </a>
+    <a href="/admin/add_teacher" class="action-btn">
+        <i class="fas fa-user-tie"></i> Add Teacher
+    </a>
+    <a href="/admin/fees" class="action-btn">
+        <i class="fas fa-file-invoice-dollar"></i> Fee System
+    </a>
+    <a href="/admin/notices" class="action-btn">
+        <i class="fas fa-bullhorn"></i> Post Notice
+    </a>
 </div>
 
-<div class="panels-grid">
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">Recent Students</div>
-      <a href="/admin/students" class="panel-link">View All →</a>
+<!-- Bottom Grid -->
+<div class="bottom-grid">
+    <!-- Recent Students -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Recent Students</span>
+            <a href="/admin/students" class="card-link">View All →</a>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Class</th>
+                    <th>Roll No</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if recent_students %}
+                    {% for s in recent_students %}
+                    <tr>
+                        <td>
+                            <div class="student-name-cell">
+                                <div class="avatar">{{ s[0][0]|upper }}</div>
+                                {{ s[0] }}
+                            </div>
+                        </td>
+                        <td><span class="badge">{{ s[2] }}</span></td>
+                        <td class="muted">{{ s[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="3" class="empty-row">No students yet</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
     </div>
-    <table class="data-table">
-      <thead><tr><th>Name</th><th>Class</th><th>Roll No</th></tr></thead>
-      <tbody>
-        {% for s in recent_students %}
-        <tr>
-          <td>
-            <div class="student-cell">
-              <div class="s-avatar">{{ s[1][0] }}</div>
-              <div class="s-name">{{ s[1] }}</div>
-            </div>
-          </td>
-          <td><span class="badge badge-green">{{ s[3] }}</span></td>
-          <td><span style="font-size:13px;color:var(--text2);font-weight:600">{{ s[2] }}</span></td>
-        </tr>
-        {% else %}
-        <tr><td colspan="3" style="text-align:center;padding:24px;color:var(--text3)">No students yet.</td></tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
 
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-title">Latest Notices</div>
-      <a href="/admin/notices" class="panel-link">Post New →</a>
+    <!-- Latest Notices -->
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">Latest Notices</span>
+            <a href="/admin/notices" class="card-link">Post New →</a>
+        </div>
+        <div class="notices-list">
+            {% if latest_notices %}
+                {% for n in latest_notices %}
+                <div class="notice-item">
+                    <div class="notice-dot"></div>
+                    <div>
+                        <div class="notice-title">{{ n[0] }}</div>
+                        <div class="notice-time">{{ n[2] }}</div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-row">No notices yet</div>
+            {% endif %}
+        </div>
     </div>
-    {% for n in recent_notices %}
-    <div class="notice-item">
-      <div class="notice-dot" style="background:var(--gold)"></div>
-      <div>
-        <div class="notice-title">{{ n[1] }}</div>
-        <div class="notice-meta">{{ n[3] }}</div>
-      </div>
-    </div>
-    {% else %}
-    <p style="padding:20px;color:var(--text3);font-size:13px;font-weight:500">No notices posted yet.</p>
-    {% endfor %}
-  </div>
 </div>
+
 {% endblock %}
