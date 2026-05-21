@@ -4,45 +4,127 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — Iqra Jannat-UL-Atfal School</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
-<div class="login-wrap">
-  <div class="login-card">
 
-    <div class="login-logo-wrap">
-      <div class="login-logo">
-        <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo">
+<div class="split-container">
+
+  <!-- ===== LEFT HERO SECTION ===== -->
+  <div class="hero-section">
+    <div class="hero-bg">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-graduation-cap"></i>
+        <span>Admissions Open 2026</span>
+      </div>
+      <h1 class="hero-title">Welcome Back</h1>
+      <p class="hero-desc">
+        Empowering young minds with knowledge and Islamic values since 1998. 
+        Access your school dashboard to manage academics, attendance, and more.
+      </p>
+      <div class="hero-features">
+        <div class="hero-feature">
+          <div class="hf-icon"><i class="fas fa-book-open"></i></div>
+          <div class="hf-text">
+            <strong>Academic Records</strong>
+            <span>Grades, exams & progress</span>
+          </div>
+        </div>
+        <div class="hero-feature">
+          <div class="hf-icon"><i class="fas fa-users"></i></div>
+          <div class="hf-text">
+            <strong>Student Management</strong>
+            <span>Enrollments & attendance</span>
+          </div>
+        </div>
+        <div class="hero-feature">
+          <div class="hf-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="hf-text">
+            <strong>Analytics</strong>
+            <span>Reports & insights</span>
+          </div>
+        </div>
       </div>
     </div>
-
-    <div class="login-school-name">Iqra Jannat-UL-Atfal School</div>
-    <p class="login-sub">Management System — Please sign in to continue</p>
-
-    <div class="login-divider"><span>Login</span></div>
-
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-
-    <form method="POST">
-      <div class="form-group">
-        <label class="form-label">Username</label>
-        <input type="text" name="username" class="form-control" placeholder="Enter your username" required autofocus>
-      </div>
-      <div class="form-group" style="margin-bottom:24px">
-        <label class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:14px">
-        Sign In →
-      </button>
-    </form>
-
-    <p style="text-align:center;margin-top:20px;font-size:12px;color:var(--text3);font-weight:500">
-      Iqra Jannat-UL-Atfal School · Admin System
-    </p>
+    <div class="hero-footer">
+      <p>© 2026 Iqra Jannat-UL-Atfal School. All rights reserved.</p>
+    </div>
   </div>
+
+  <!-- ===== RIGHT LOGIN SECTION ===== -->
+  <div class="login-section">
+    <div class="login-card" id="loginCard">
+
+      <!-- Logo & Branding -->
+      <div class="login-brand">
+        <div class="login-logo-ring">
+          <img src="{{ url_for('static', filename='images/logo.webp') }}" alt="School Logo" class="login-logo-img">
+        </div>
+        <h2 class="login-school-name">Iqra Jannat-UL-Atfal School</h2>
+        <p class="login-subtitle">Management System — Please sign in to continue</p>
+      </div>
+
+      <!-- Error Alert -->
+      {% if error %}
+      <div class="alert alert-error">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>{{ error }}</span>
+      </div>
+      {% endif %}
+
+      <!-- Login Form -->
+      <form method="POST" class="login-form" autocomplete="off">
+        <div class="input-group">
+          <label class="input-label" for="username">Username</label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" name="username" id="username" class="input-field" placeholder="Enter your username" required autofocus>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="password">Password</label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" name="password" id="password" class="input-field" placeholder="Enter your password" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-signin">
+          <span>Sign In</span>
+          <i class="fas fa-arrow-right btn-icon"></i>
+        </button>
+      </form>
+
+      <!-- Footer -->
+      <p class="login-footer">
+        <i class="fas fa-shield-alt"></i>
+        Iqra Jannat-UL-Atfal School · Admin System
+      </p>
+    </div>
+  </div>
+
 </div>
+
+<!-- ===== ANIMATION TRIGGER ===== -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const card = document.getElementById('loginCard');
+    if (card) {
+      card.classList.add('card-visible');
+    }
+  });
+</script>
+
 </body>
 </html>
