@@ -1,82 +1,63 @@
-import sqlite3
+import psycopg2
+import os
+from dotenv import load_dotenv
 
-db = sqlite3.connect("school.db")
-cursor = db.cursor()
+load_dotenv()
+print("DATABASE_URL =", os.environ.get("DATABASE_URL"))
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
-# ---------------- USERS ----------------
+conn = psycopg2.connect(DATABASE_URL, sslmode="require")
+cursor = conn.cursor()
+
+# ================= USERS =================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT NOT NULL
 )
 """)
 
-# Default admin
-cursor.execute("""
-INSERT OR IGNORE INTO users (username, password, role)
-VALUES ('admin', 'admin123', 'admin')
-""")
-
-# ---------------- STUDENTS ----------------
+# ================= STUDENTS =================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS students (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
     roll_no TEXT UNIQUE NOT NULL,
     class_name TEXT NOT NULL
 )
 """)
 
-# ---------------- TEACHERS ----------------
+# ================= ATTENDANCE =================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS teachers (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    email TEXT UNIQUE,
-    subject TEXT NOT NULL
-)
-""")
-
-# ---------------- ATTENDANCE ----------------
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS attendance_new (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_id INTEGER NOT NULL,
-    date TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS attendance (
+    id SERIAL PRIMARY KEY,
+    student_id INTEGER REFERENCES students(id) ON DELETE CASCADE,
+    date DATE NOT NULL,
     status TEXT NOT NULL,
-    UNIQUE(student_id, date),
-    FOREIGN KEY (student_id) REFERENCES students(id)
+    UNIQUE(student_id, date)
 )
 """)
 
-# ---------------- NOTICES ----------------
+# ================= NOTICES =================
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS notices (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id SERIAL PRIMARY KEY,
     title TEXT NOT NULL,
     message TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """)
 
-# ---------------- FEES (NEW) ----------------
+# ================= DEFAULT ADMIN =================
 cursor.execute("""
-CREATE TABLE IF NOT EXISTS fees (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_id INTEGER NOT NULL,
-    month TEXT NOT NULL,
-    year INTEGER NOT NULL,
-    amount INTEGER NOT NULL,
-    status TEXT DEFAULT 'unpaid',
-    paid_date TEXT,
-    UNIQUE(student_id, month, year),
-    FOREIGN KEY (student_id) REFERENCES students(id)
-)
-""")
+INSERT INTO users (username, password, role)
+VALUES (%s, %s, %s)
+ON CONFLICT (username) DO NOTHING
+""", ("admin", "admin123", "admin"))
 
-db.commit()
-db.close()
+conn.commit()
+conn.close()
 
-print("✅ Database & tables created successfully")
+print("Database and tables created successfully!")
