@@ -113,6 +113,3 @@ Role-based pages:
 
 ---
 
-## License
-Add your license information here (MIT/Apache/etc.) if applicable.
-
